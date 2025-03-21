@@ -1,1 +1,62 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Limelight&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --color-leather-50: #f6f4f0;
+  --color-leather-100: #eae1d7;
+  --color-leather-200: #d6c5b2;
+  --color-leather-300: #bea086;
+  --color-leather-400: #a67b5b;
+  --color-leather-500: #9c7156;
+  --color-leather-600: #865b48;
+  --color-leather-700: #6c463c;
+  --color-leather-800: #5c3d37;
+  --color-leather-900: #503633;
+  --color-leather-950: #2d1c1b;
+
+  --font-head: 'Roboto Serif', serif;
+  --font-body: 'Mukta', serif;
+}
+
+@layer base {
+  html,
+  body {
+    @apply bg-leather-200 overflow-hidden flex h-auto min-h-screen flex-col;
+  }
+
+  body {
+    @apply flex justify-center items-center font-body;
+  }
+
+  h1 {
+    @apply text-leather-900 font-head font-bold text-5xl;
+  }
+
+  ul {
+    @apply list-none pl-9 text-3xl flex flex-col gap-4;
+  }
+
+  ul li {
+    @apply relative;
+  }
+
+  ul li:nth-child(1)::before {
+    content: '🥇';
+    @apply absolute left-[-2.5rem] text-4xl;
+  }
+
+  ul li:nth-child(2)::before {
+    content: '🥈';
+    @apply absolute left-[-2.5rem] text-4xl;
+  }
+
+  ul li:nth-child(3)::before {
+    content: '🥉';
+    @apply absolute left-[-2.5rem] text-4xl;
+  }
+
+  ul li:nth-child(n + 4)::before {
+    content: '😞';
+    @apply absolute left-[-2.5rem] text-4xl;
+  }
+}
