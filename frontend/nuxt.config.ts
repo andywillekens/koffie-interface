@@ -15,5 +15,10 @@ export default defineNuxtConfig({
     apiUrl: process.env.API_URL,
     bearerToken: process.env.BEARER_TOKEN
   },
-  modules: ['@nuxt/icon', '@nuxt/image', '@nuxt/fonts']
+  modules: ['@nuxt/icon', '@nuxt/image', '@nuxt/fonts', '@nuxt/scripts'],
+  app: {
+    head: {
+      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }]
+    }
+  }
 })

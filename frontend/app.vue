@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+
   const { data } = await useFetch(`/api/stats`)
 
   // Process the data: group by user and count occurrences
@@ -15,6 +17,59 @@
     return Object.entries(userCounts)
       .map(([user, total]) => ({ user, total }))
       .sort((a, b) => b.total - a.total)
+  })
+
+  // Confetti logic
+  export interface JSConfettiApi {
+    JSConfetti: {
+      new (): {
+        addConfetti: (options?: { emojis: string[] }) => void
+      }
+    }
+  }
+
+  declare global {
+    interface Window extends JSConfettiApi {}
+  }
+
+  const { onLoaded } = useScriptNpm<JSConfettiApi>({
+    packageName: 'js-confetti',
+    file: 'dist/js-confetti.browser.js',
+    version: '0.12.0',
+    scriptOptions: {
+      use() {
+        return { JSConfetti: window.JSConfetti }
+      }
+    }
+  })
+
+  const confettiInstance = ref<any>(null)
+
+  const triggerConfetti = () => {
+    if (confettiInstance.value) {
+      confettiInstance.value.addConfetti({
+        emojis: ['☕️', '☕️', '☕️', '☕️', '☕️', '☕️', '💩'],
+        confettiNumber: 100,
+        emojiSize: 100
+      })
+    }
+  }
+
+  onMounted(() => {
+    onLoaded(({ JSConfetti }) => {
+      confettiInstance.value = new JSConfetti()
+
+      // Fire confetti immediately on first load
+      triggerConfetti()
+
+      // Attach event listener to body
+      document.body.addEventListener('click', triggerConfetti)
+    })
+  })
+
+  onBeforeUnmount(() => {
+    // Cleanup event listener
+    document.body.removeEventListener('click', triggerConfetti)
   })
 </script>
 
