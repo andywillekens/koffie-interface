@@ -37,7 +37,7 @@
   }
 
   ul li {
-    @apply relative;
+    @apply relative text-xl flex gap-2 items-center;
   }
 
   ul li:nth-child(1)::before {

@@ -77,7 +77,14 @@
   <section class="w-[600px] flex flex-col gap-6">
     <h1>🏆 Koffie leaderboard:</h1>
     <ul>
-      <li v-for="item in groupedData" :key="item.user">{{ item.user }}: {{ item.total }}</li>
+      <li v-for="item in groupedData" :key="item.user">
+        <span class="font-head font-bold text-3xl text-leather-500">{{ item.user }}</span> heeft
+        <span
+          class="bg-leather-900 w-8 font-head font-bold inline-flex h-8 rounded-full text-leather-300 text-2xl justify-center items-center"
+          >{{ item.total }}</span
+        >
+        kopjes koffie op.
+      </li>
     </ul>
   </section>
 </template>
