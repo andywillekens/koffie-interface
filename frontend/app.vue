@@ -1,6 +1,10 @@
 <script setup lang="ts">
   import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 
+  function playAudio(url) {
+    new Audio(url).play()
+  }
+
   const { data } = await useFetch(`/api/stats`)
 
   // Process the data: group by user and count occurrences
@@ -64,12 +68,14 @@
 
       // Attach event listener to body
       document.body.addEventListener('click', triggerConfetti)
+      document.body.addEventListener('click', () => playAudio('/opa.mp3'))
     })
   })
 
   onBeforeUnmount(() => {
     // Cleanup event listener
     document.body.removeEventListener('click', triggerConfetti)
+    document.body.removeEventListener('click', () => playAudio('/opa.mp3'))
   })
 </script>
 
@@ -87,4 +93,5 @@
       </li>
     </ul>
   </section>
+  <audio id="opa" src="/opa.mp3"></audio>
 </template>
