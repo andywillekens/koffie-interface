@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 
-  function playAudio(url) {
+  function playAudio(url: string) {
     new Audio(url).play()
   }
 
@@ -11,13 +11,11 @@
   const groupedData = computed(() => {
     if (!data.value) return []
 
-    // Group by user and count occurrences
     const userCounts = data.value.reduce((acc, item) => {
       acc[item.user] = (acc[item.user] || 0) + 1
       return acc
     }, {} as Record<string, number>)
 
-    // Convert object to sorted array
     return Object.entries(userCounts)
       .map(([user, total]) => ({ user, total }))
       .sort((a, b) => b.total - a.total)
@@ -59,23 +57,25 @@
     }
   }
 
+  // Handle click: trigger confetti, play audio, and refresh page
+  const handleClick = () => {
+    playAudio('/opa.mp3')
+    triggerConfetti()
+    setTimeout(() => {
+      window.location.reload()
+    }, 500) // Delay refresh slightly to allow audio/confetti to start
+  }
+
   onMounted(() => {
     onLoaded(({ JSConfetti }) => {
       confettiInstance.value = new JSConfetti()
-
-      // Fire confetti immediately on first load
-      triggerConfetti()
-
-      // Attach event listener to body
-      document.body.addEventListener('click', triggerConfetti)
-      document.body.addEventListener('click', () => playAudio('/opa.mp3'))
+      triggerConfetti() // Fire confetti on first load
+      document.body.addEventListener('click', handleClick)
     })
   })
 
   onBeforeUnmount(() => {
-    // Cleanup event listener
-    document.body.removeEventListener('click', triggerConfetti)
-    document.body.removeEventListener('click', () => playAudio('/opa.mp3'))
+    document.body.removeEventListener('click', handleClick)
   })
 </script>
 
@@ -89,7 +89,7 @@
           class="bg-leather-900 w-8 font-head font-bold inline-flex h-8 rounded-full text-leather-300 text-2xl justify-center items-center"
           >{{ item.total }}</span
         >
-        kopjes koffie op.
+        {{ item.total > 1 ? 'kopjes' : 'kopje' }} koffie op.
       </li>
     </ul>
   </section>
